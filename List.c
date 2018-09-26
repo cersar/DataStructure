@@ -37,6 +37,14 @@ void Delete(List *l,Node *n) {
 	}
 }
 
+Node * Search(List l,int k) {
+	Node *p = l;
+	while (p != NULL&&p->val != k) {
+		p = p->next;
+	}
+	return p;
+}
+
 int main() {
 	List l = NULL;
 	Node a = {1};
@@ -58,5 +66,19 @@ int main() {
 		p = p->next;
 	}
 	printf("\n");
+	Node *r = Search(l, 2);
+	if (r != NULL) {
+		printf("找到元素:%d\n", r->val);
+	}
+	else {
+		printf("未找到这样的元素！\n");
+	}
+	r = Search(l, 3);
+	if (r != NULL) {
+		printf("找到元素:%d\n", r->val);
+	}
+	else {
+		printf("未找到这样的元素！\n");
+	}
 	return 0;
 }
