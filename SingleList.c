@@ -65,8 +65,10 @@ void Reverse(SingleList *l) {
 	if ((*l) != NULL) {
 		Node *prev = *l;
 		Node *p = (*l)->next;
-		(*l)->next = NULL;
 		Node *tmp = NULL;
+		//第一个节点反转
+		(*l)->next = NULL;
+		//余下节点反转
 		while (p != NULL) {
 			tmp = p->next;
 			p->next = prev;
