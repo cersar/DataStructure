@@ -30,6 +30,15 @@ Node * Search(List *l,int k) {
 	}
 	return p;
 }
+//search的另一版本
+Node * Search2(List *l, int k) {
+	Node *p = (*l).nil.next;
+	(*l).nil.val = k;
+	while (p->val != k) {
+		p = p->next;
+	}
+	return p;
+}
 
 int main() {
 	List l;
