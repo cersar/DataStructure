@@ -3,7 +3,7 @@
 
 typedef struct Node {
 	int val;
-	Node *next=NULL;
+	Node *next = NULL;
 }*SingleList;
 
 void Insert(SingleList *l, Node *n) {
@@ -14,7 +14,7 @@ void Insert(SingleList *l, Node *n) {
 }
 
 //常规实现，时间复杂度O(n)
-void Delete(SingleList *l,Node *n) {
+void Delete(SingleList *l, Node *n) {
 	if (*l == n) {
 		*l = n->next;
 	}
@@ -34,7 +34,7 @@ void Delete(SingleList *l,Node *n) {
 
 //常规实现，非尾元素时间复杂度O(1)，尾元素时间复杂度O(n)
 void DeleteLinear(SingleList *l, Node *n) {
-	if (n->next!=NULL) {
+	if (n->next != NULL) {
 		n->val = n->next->val;
 		n->next = n->next->next;
 	}
@@ -52,7 +52,7 @@ void DeleteLinear(SingleList *l, Node *n) {
 	}
 }
 
-Node * Search(SingleList *l,int k) {
+Node * Search(SingleList *l, int k) {
 	Node *p = *l;
 	while (p != NULL&&p->val != k) {
 		p = p->next;
@@ -60,15 +60,39 @@ Node * Search(SingleList *l,int k) {
 	return p;
 }
 
+//链表反转
+void Reverse(SingleList *l) {
+	if ((*l) != NULL) {
+		Node *prev = *l;
+		Node *p = (*l)->next;
+		(*l)->next = NULL;
+		Node *tmp = NULL;
+		while (p != NULL) {
+			tmp = p->next;
+			p->next = prev;
+			prev = p;
+			p = tmp;
+		}
+		(*l) = prev;
+	}
+}
+
 int main() {
-	SingleList l=NULL;
-	Node a = {1};
+	SingleList l = NULL;
+	Node a = { 1 };
 	Node b = { 2 };
 	Node c = { 3 };
 	Insert(&l, &a);
 	Insert(&l, &b);
 	Insert(&l, &c);
 	Node *p = l;
+	while (p != NULL) {
+		printf("%d\t", p->val);
+		p = p->next;
+	}
+	printf("\n");
+	Reverse(&l);
+	p = l;
 	while (p != NULL) {
 		printf("%d\t", p->val);
 		p = p->next;
