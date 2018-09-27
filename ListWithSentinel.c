@@ -3,12 +3,12 @@
 
 typedef struct Node {
 	int val;
-	Node *prev=NULL;
-	Node *next=NULL;
+	Node *prev = NULL;
+	Node *next = NULL;
 }Node;
 
 typedef struct List {
-	Node nil = {0,&nil,&nil};
+	Node nil = { 0,&nil,&nil };
 }List;
 
 void Insert(List *l, Node *n) {
@@ -18,12 +18,12 @@ void Insert(List *l, Node *n) {
 	n->prev = &(*l).nil;
 }
 
-void Delete(List *l,Node *n) {
+void Delete(List *l, Node *n) {
 	n->prev->next = n->next;
 	n->next->prev = n->prev;
 }
 
-Node * Search(List *l,int k) {
+Node * Search(List *l, int k) {
 	Node *p = (*l).nil.next;
 	while (p != &(*l).nil&&p->val != k) {
 		p = p->next;
@@ -40,40 +40,39 @@ Node * Search2(List *l, int k) {
 	return p;
 }
 
+//链表合并O(1)
+//l1、l2合并到新链表l,由于原l1、l2的结构已经被破坏，最后将链表置空
+void Union(List *l1, List *l2,List *l) {
+	(*l).nil.next = (*l1).nil.next;
+	(*l1).nil.next->prev = &(*l).nil;
+	(*l).nil.prev = (*l2).nil.prev;
+	(*l2).nil.prev->next = &(*l).nil;
+	(*l1).nil.prev->next = (*l2).nil.next;
+	(*l2).nil.next->prev = (*l1).nil.prev;
+	(*l1).nil.next = NULL;
+	(*l2).nil.next = NULL;
+}
+
 int main() {
-	List l;
-	Node a = {1};
+	List l1,l2,l;
+	Node a = { 1 };
 	Node b = { 2 };
 	Node c = { 3 };
-	Insert(&l, &a);
-	Insert(&l, &b);
-	Insert(&l, &c);
+	Node d = { 4 };
+	Node e = { 5 };
+	Node f = { 6 };
+	Insert(&l1, &a);
+	Insert(&l1, &b);
+	Insert(&l1, &c);
+	Insert(&l2, &d);
+	Insert(&l2, &e);
+	Insert(&l2, &f);
+	Union(&l1, &l2, &l);
 	Node *p = l.nil.next;
 	while (p != &l.nil) {
 		printf("%d\t", p->val);
 		p = p->next;
 	}
 	printf("\n");
-	Delete(&l, &b);
-	p = l.nil.next;
-	while (p != &l.nil) {
-		printf("%d\t", p->val);
-		p = p->next;
-	}
-	printf("\n");
-	Node *r = Search(&l, 2);
-	if (r != &l.nil) {
-		printf("找到元素:%d\n", r->val);
-	}
-	else {
-		printf("未找到这样的元素！\n");
-	}
-	r = Search(&l, 3);
-	if (r != &l.nil) {
-		printf("找到元素:%d\n", r->val);
-	}
-	else {
-		printf("未找到这样的元素！\n");
-	}
 	return 0;
 }
