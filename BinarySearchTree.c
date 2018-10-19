@@ -66,11 +66,22 @@ void TrivalByStack(Tree t) {
 void TrivalInOrder(Tree t) {
 	if (t != NULL) {
 		TrivalInOrder(t->left);
-		if (t->parent != NULL) {
-			printf("parent:%d->", t->parent->val);
-		}
 		printf("%d\t", t->val);
 		TrivalInOrder(t->right);
+	}
+}
+
+void PrintRange(Tree t,int low,int high) {
+	if (t != NULL) {
+		if (t->val > low) {
+			PrintRange(t->left, low, high);
+		}
+		if (t->val >= low&&t->val <= high) {
+			printf("%d\t", t->val);
+		}
+		if (t->val < high) {
+			PrintRange(t->right, low, high);
+		}
 	}
 }
 
@@ -308,5 +319,6 @@ int main() {
 	int key = 4;
 	printf("小于等于%d的最大节点为%d\n", key, floor(t, key)->val);
 	printf("大于等于%d的最小节点为%d\n", key, ceil(t, key)->val);
+	PrintRange(t, 3, 6);
 	return 0;
 }
