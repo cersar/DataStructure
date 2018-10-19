@@ -51,7 +51,7 @@ TreeNode* pop(stack *s) {
 void TrivalByStack(Tree t) {
 	stack s;
 	while (t != NULL || !isEmpty(&s)) {
-		while(t != NULL) {
+		while (t != NULL) {
 			push(&s, t);
 			t = t->left;
 		}
@@ -88,7 +88,7 @@ TreeNode *TreeMax(Tree t) {
 }
 
 //插入节点
-void TreeInsert(Tree *t,TreeNode *n) {
+void TreeInsert(Tree *t, TreeNode *n) {
 	TreeNode *parent = NULL;
 	TreeNode *p = *t;
 	while (p != NULL) {
@@ -148,7 +148,7 @@ TreeNode *TreePredecessor(TreeNode *n) {
 //1）u仅有一个节点.
 //2）v=u.left且v.right=NULL，此时需要在调用TransPlantTree之后需要更新v.right和u.right.parent.
 //2）v=u.right且v.right=NULL，此时需要在调用TransPlantTree之后需要更新v.left和u.left.parent.
-void TransPlantTree(Tree *t,TreeNode *u,TreeNode *v) {
+void TransPlantTree(Tree *t, TreeNode *u, TreeNode *v) {
 	if (u->parent == NULL) {
 		*t = v;
 	}
@@ -185,9 +185,47 @@ void TreeDelete(Tree *t, TreeNode *n) {
 	}
 }
 
+//寻找最大Node，Node.val<=key
+TreeNode *floor(Tree t,int key) {
+	if (t == NULL) {
+		return NULL;
+	}
+	if (t->val>key) {
+		return floor(t->left, key);
+	}
+	else {
+		TreeNode *n = floor(t->right, key);
+		if (n == NULL) {
+			return t;
+		}
+		else {
+			return n;
+		}
+	}
+}
+
+//寻找最小Node，Node.val>=key
+TreeNode *ceil(Tree t, int key) {
+	if (t == NULL) {
+		return NULL;
+	}
+	if (t->val<key) {
+		return ceil(t->right, key);
+	}
+	else {
+		TreeNode *n = ceil(t->left, key);
+		if (n == NULL) {
+			return t;
+		}
+		else {
+			return n;
+		}
+	}
+}
+
 int main() {
 	stack s;
-	Tree t=NULL;
+	Tree t = NULL;
 	TreeNode n1 = { 1 };
 	TreeNode n2 = { 2 };
 	TreeNode n3 = { 3 };
@@ -208,5 +246,8 @@ int main() {
 	printf("%d的前驱为%d\n", n5.val, TreePredecessor(&n5)->val);
 	printf("树的最小节点%d\n", TreeMin(t)->val);
 	printf("树的最大节点%d\n", TreeMax(t)->val);
+	int key = 4;
+	printf("小于等于%d的最大节点为%d\n", key, floor(t, key)->val);
+	printf("大于等于%d的最小节点为%d\n", key, ceil(t, key)->val);
 	return 0;
 }
