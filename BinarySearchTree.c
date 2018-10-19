@@ -120,9 +120,9 @@ TreeNode *TreeSucessor(TreeNode *n) {
 	}
 	else {
 		TreeNode *parent = n->parent;
-		while (n != NULL&&parent->left != n) {
+		while (parent != NULL&&parent->left != n) {
 			n = parent;
-			parent = n->parent;
+			parent = parent->parent;
 		}
 		return parent;
 	}
@@ -135,9 +135,9 @@ TreeNode *TreePredecessor(TreeNode *n) {
 	}
 	else {
 		TreeNode *parent = n->parent;
-		while (n != NULL&&parent->right != n) {
+		while (parent != NULL&&parent->right != n) {
 			n = parent;
-			parent = n->parent;
+			parent = parent->parent;
 		}
 		return parent;
 	}
