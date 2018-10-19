@@ -65,8 +65,11 @@ void TrivalByStack(Tree t) {
 //递归的中序遍历
 void TrivalInOrder(Tree t) {
 	if (t != NULL) {
-		printf("%d\t", t->val);
 		TrivalInOrder(t->left);
+		if (t->parent != NULL) {
+			printf("parent:%d->", t->parent->val);
+		}
+		printf("%d\t", t->val);
 		TrivalInOrder(t->right);
 	}
 }
@@ -185,6 +188,60 @@ void TreeDelete(Tree *t, TreeNode *n) {
 	}
 }
 
+//删除树中的最小节点
+Tree DeleteMin(Tree t) {
+	TreeNode *N=NULL;
+	if (t->left == NULL) {
+		return t->right;
+	}
+	else {
+		N = DeleteMin(t->left);
+		t->left = N;
+		if (N != NULL) {
+			N->parent = t;
+		}
+	}
+	return t;
+}
+
+//根据key值删除,递归
+Tree TreeDelete(Tree t,int key) {
+	TreeNode *N = NULL;
+	if (t == NULL) {
+		return NULL;
+	}
+	//查找并更新删除后的左右子树
+	if (key < t->val) {
+		N = TreeDelete(t->left, key);
+		t->left = N;
+		if (N != NULL) {
+			N->parent = t;
+		}
+	}
+	else if (key > t->val) {
+		N = TreeDelete(t->right, key);
+		t->right = N;
+		if (N != NULL) {
+			N->parent = t;
+		}
+	}
+	else {
+		//只有这一步真正删除节点
+		if (t->left == NULL) return t->right;
+		if (t->right == NULL) return t->left;
+		TreeNode *tmp = t;
+		t = TreeMin(t->right);
+		N = DeleteMin(tmp->right);
+		t->right = N;
+		if (N != NULL) {
+			N->parent = t;
+		}
+		t->left = tmp->left;
+		tmp->left->parent = t;
+	}
+	return t;
+}
+
 //寻找最大Node，Node.val<=key
 TreeNode *floor(Tree t,int key) {
 	if (t == NULL) {
@@ -238,12 +295,14 @@ int main() {
 	TreeInsert(&t, &n4);
 	TreeInsert(&t, &n6);
 	TreeInsert(&t, &n5);
-	TreeDelete(&t, &n1);
-	TreeDelete(&t, &n4);
 	TrivalInOrder(t);
 	printf("\n");
-	printf("%d的后继为%d\n", n5.val, TreeSucessor(&n5)->val);
-	printf("%d的前驱为%d\n", n5.val, TreePredecessor(&n5)->val);
+	t=TreeDelete(t,2);
+	t->parent = NULL;
+	TrivalInOrder(t);
+	printf("\n");
+	printf("%d的后继为%d\n", n4.val, TreeSucessor(&n4)->val);
+	printf("%d的前驱为%d\n", n4.val, TreePredecessor(&n4)->val);
 	printf("树的最小节点%d\n", TreeMin(t)->val);
 	printf("树的最大节点%d\n", TreeMax(t)->val);
 	int key = 4;
