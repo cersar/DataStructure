@@ -296,7 +296,7 @@ void TreeDelete(RBTree *t, int val) {
 				x->left->p = y;
 				y->color = x->color;
 			}
-			if (color == BLACK) {
+			if (*t != NULL && color == BLACK) {
 				RBDeleteFixup(t, z, p);
 			}
 			free(x);
