@@ -1,13 +1,14 @@
+//双向链表
 #include<stdio.h>
 #include<stdlib.h>
 
 typedef struct Node {
 	int val;
-	Node *prev=NULL;
-	Node *next=NULL;
-}*List;
+	Node *prev = NULL;
+	Node *next = NULL;
+}*DoubleLinkedList;
 
-bool isEmpty(List l) {
+bool isEmpty(DoubleLinkedList l) {
 	if (l == NULL) {
 		return true;
 	}
@@ -16,7 +17,7 @@ bool isEmpty(List l) {
 	}
 }
 
-void Insert(List *l, Node *n) {
+void Insert(DoubleLinkedList *l, Node *n) {
 	n->next = *l;
 	if (*l != NULL) {
 		(*l)->prev = n;
@@ -25,7 +26,7 @@ void Insert(List *l, Node *n) {
 	(*l)->prev = NULL;
 }
 
-void Delete(List *l,Node *n) {
+void Delete(DoubleLinkedList *l, Node *n) {
 	if (n->prev != NULL) {
 		n->prev->next = n->next;
 	}
@@ -37,17 +38,17 @@ void Delete(List *l,Node *n) {
 	}
 }
 
-Node * Search(List l,int k) {
+Node * Search(DoubleLinkedList l, int k) {
 	Node *p = l;
-	while (p != NULL&&p->val != k) {
+	while (p != NULL && p->val != k) {
 		p = p->next;
 	}
 	return p;
 }
 
 int main() {
-	List l = NULL;
-	Node a = {1};
+	DoubleLinkedList l = NULL;
+	Node a = { 1 };
 	Node b = { 2 };
 	Node c = { 3 };
 	Insert(&l, &a);
