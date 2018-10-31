@@ -10,23 +10,21 @@ typedef struct Node {
 	Node *prev;
 }*DoubleCircleLinkedList;
 
-void ListInsert(DoubleCircleLinkedList *l,int val) {
+void ListInsert(DoubleCircleLinkedList *l, int val) {
 	Node *p = (Node *)malloc(sizeof(Node));
 	p->val = val;
-	if (*l == NULL) {
-		p->prev = p;
-		p->next = p;
-	}
-	else {
+	p->prev = p;
+	p->next = p;
+	if (*l != NULL) {
 		p->prev = (*l)->prev;
+		p->next = *l;
 		(*l)->prev->next = p;
 		(*l)->prev = p;
-		p->next = *l;
 	}
 	*l = p;
 }
 
-void ListDelete(DoubleCircleLinkedList *l,Node *p) {
+void ListDelete(DoubleCircleLinkedList *l, Node *p) {
 	if (p == *l) {
 		if (p->next != p) {
 			(*l) = p->next;
@@ -34,7 +32,6 @@ void ListDelete(DoubleCircleLinkedList *l,Node *p) {
 		else {
 			(*l) = NULL;
 		}
-		
 	}
 	p->prev->next = p->next;
 	p->next->prev = p->prev;
@@ -60,12 +57,12 @@ void printList(DoubleCircleLinkedList l) {
 void FreeMemory(DoubleCircleLinkedList *l) {
 	if (*l != NULL) {
 		Node *p = *l, *tmp = NULL;
-		do{
+		do {
 			tmp = p->next;
 			free(p);
 			p = tmp;
 		} while (p != *l);
 		*l = NULL;
 	}
-	
+
 }
